@@ -1,0 +1,5 @@
+ALTER TABLE event
+    ADD title VARCHAR(255);
+
+ALTER TABLE event
+    ALTER COLUMN title SET NOT NULL;

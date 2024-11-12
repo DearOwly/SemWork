@@ -1,0 +1,41 @@
+services:
+  sem-work:
+    image: sem-work:latest
+    build:
+      context: .
+      args:
+        DOCKER_BUILDKIT: 1
+    restart: "no"
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - semwork
+
+  postgres:
+    image: postgres:16.0-alpine
+    restart: "no"
+    ports:
+      - "5431:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: semwork
+    healthcheck:
+      test: pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB
+      interval: 10s
+      timeout: 5s
+      start_period: 10s
+      retries: 5
+    networks:
+      - semwork
+
+volumes:
+  postgres_data:
+
+networks:
+  semwork:

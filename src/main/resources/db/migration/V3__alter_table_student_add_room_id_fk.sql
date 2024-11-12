@@ -1,0 +1,8 @@
+ALTER TABLE student
+    ADD room_id SMALLINT;
+
+ALTER TABLE student
+    ALTER COLUMN room_id SET NOT NULL;
+
+ALTER TABLE student
+    ADD CONSTRAINT FK_STUDENT_ON_ROOM FOREIGN KEY (room_id) REFERENCES room (id);
