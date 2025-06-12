@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import so.sonya.semwork.security.StudentPermissionEvaluator;
 
@@ -26,6 +28,8 @@ public class SecurityConfiguration {
             .logout(Customizer.withDefaults())
             .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                 .requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/ws/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/students").permitAll()
                 .anyRequest().authenticated()
             )
             .httpBasic(Customizer.withDefaults())
@@ -50,5 +54,10 @@ public class SecurityConfiguration {
         DefaultMethodSecurityExpressionHandler expressionHandler = new DefaultMethodSecurityExpressionHandler();
         expressionHandler.setPermissionEvaluator(new StudentPermissionEvaluator());
         return expressionHandler;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

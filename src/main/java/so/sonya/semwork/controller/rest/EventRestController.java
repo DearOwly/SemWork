@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import so.sonya.semwork.dto.request.CreateEventRequest;
 import so.sonya.semwork.dto.response.EventResponse;
+import so.sonya.semwork.security.StudentDetails;
 import so.sonya.semwork.service.EventService;
 
 import java.util.UUID;
@@ -35,5 +36,10 @@ public class EventRestController {
     @PreAuthorize("hasPermission(null, 'Event', 'write')")
     public EventResponse create(@RequestBody @Valid CreateEventRequest request) {
         return eventService.create(request);
+    }
+
+    @PostMapping("/{id}/signUp")
+    public void signUpToEvent(@PathVariable UUID id, StudentDetails studentDetails) {
+        eventService.signUpToEvent(id, studentDetails.getId());
     }
 }

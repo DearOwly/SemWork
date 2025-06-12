@@ -41,7 +41,6 @@ public class StudentRestController {
     }
 
     @PostMapping
-    @PreAuthorize("hasPermission(null, 'Student', 'read')")
     public StudentResponse create(@RequestBody @Valid CreateStudentRequest request) {
         return studentService.create(request);
     }

@@ -53,4 +53,6 @@ public interface StudentRepository extends JpaRepository<Student, UUID> {
         """,
         nativeQuery = true)
     Integer getPointsById(UUID id);
+
+    boolean existsByUsername(String username);
 }
